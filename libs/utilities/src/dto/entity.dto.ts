@@ -1,9 +1,8 @@
-import { IsString, IsBoolean, IsOptional, isNumber } from 'class-validator';
+import { IsString, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateEntityDto {
   @IsString()
   description: string;
- 
 }
 
 export class UpdateEntityDto {

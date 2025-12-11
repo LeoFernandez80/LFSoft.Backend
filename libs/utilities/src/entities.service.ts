@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateEntityDto, UpdateEntityDto } from './dto/entity.dto';
+
 import { EntityFilterDto } from './dto/entity-filter.dto';
-import { PageFilterDto } from '../shared/page-filter.dto';
-import { PaginatedListDto } from '../shared/paginated-list.dto';
+import { CreateEntityDto, UpdateEntityDto } from './dto/entity.dto';
+import { PrismaService, PageFilterDto, PaginatedListDto } from '@libs/shared';
 
 @Injectable()
 export class EntitiesService {
@@ -11,37 +10,33 @@ export class EntitiesService {
 
   async findAll(filters: EntityFilterDto, pageFilter: PageFilterDto): Promise<PaginatedListDto<any>> {
     const { page = 1, pageSize = 5, sortField = 'createdAt', sortDirection = 'desc' } = pageFilter;
-    
-    // Construir el objeto where dinámicamente
+
     const where: any = { isActive: true };
-    
+
     if (filters.id) {
       where.id = filters.id;
     }
-    
+
     if (filters.description) {
       where.description = {
         contains: filters.description,
         mode: 'insensitive',
       };
     }
-    
-    // Obtener el total de registros
+
     const total = await this.prisma.entity.count({ where });
-    
-    // Obtener los datos paginados
+
     const data = await this.prisma.entity.findMany({
       where,
       orderBy: { [sortField]: sortDirection },
       skip: (page - 1) * pageSize,
       take: pageSize,
     });
-    
+
     return new PaginatedListDto(data, total);
   }
 
   async findOne(id: number) {
-    console.log('Finding entity with ID:', id);
     const entity = await this.prisma.entity.findUnique({
       where: { id },
     });

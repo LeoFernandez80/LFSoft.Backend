@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateArticleDto, UpdateArticleDto } from './dto/article.dto';
+
 import { ArticleFilterDto } from './dto/article-filter.dto';
-import { PageFilterDto } from '../shared/page-filter.dto';
-import { PaginatedListDto } from '../shared/paginated-list.dto';
+import { CreateArticleDto, UpdateArticleDto } from './dto/article.dto';
+import { PrismaService, PageFilterDto, PaginatedListDto } from '@libs/shared';
 
 @Injectable()
 export class ArticlesService {
@@ -11,8 +10,7 @@ export class ArticlesService {
 
   async findAll(filters: ArticleFilterDto, pageFilter: PageFilterDto): Promise<PaginatedListDto<any>> {
     const { page = 1, pageSize = 5, sortField = 'createdAt', sortDirection = 'desc' } = pageFilter;
-
-    // Construir el objeto where dinámicamente
+    
     const where: any = { isActive: true };
 
     if (filters.id) {
@@ -47,10 +45,8 @@ export class ArticlesService {
       };
     }
 
-    // Obtener el total de registros
     const total = await this.prisma.article.count({ where });
 
-    // Obtener los datos paginados
     const data = await this.prisma.article.findMany({
       where,
       orderBy: { [sortField]: sortDirection },

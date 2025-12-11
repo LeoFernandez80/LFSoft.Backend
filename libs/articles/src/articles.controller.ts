@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
-import { CreateArticleDto, UpdateArticleDto } from './dto/article.dto';
+import { JwtAuthGuard } from '@libs/security';
 import { ArticleFilterDto } from './dto/article-filter.dto';
-import { PageFilterDto } from '../shared/page-filter.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateArticleDto, UpdateArticleDto } from './dto/article.dto';
+import { PageFilterDto } from '@libs/shared';
 
 @Controller('articles')
 @UseGuards(JwtAuthGuard)

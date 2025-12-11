@@ -10,6 +10,18 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@libs/users": ["libs/users/src"],
+      "@libs/users/*": ["libs/users/src/*"],
+      "@libs/security": ["libs/security/src"],
+      "@libs/security/*": ["libs/security/src/*"],
+      "@libs/articles": ["libs/articles/src"],
+      "@libs/articles/*": ["libs/articles/src/*"],
+      "@libs/utilities": ["libs/utilities/src"],
+      "@libs/utilities/*": ["libs/utilities/src/*"],
+      "@libs/shared": ["libs/shared/src"],
+      "@libs/shared/*": ["libs/shared/src/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

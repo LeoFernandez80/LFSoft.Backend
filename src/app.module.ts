@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { EntitiesModule } from './entities/entities.module';
-import { ArticlesModule } from './articles/articles.module';
+import { UsersModule } from '@libs/users';
+import { SecurityModule } from '@libs/security';
+import { EntitiesModule } from '@libs/utilities';
+import { ArticlesModule } from '@libs/articles';
+import { PrismaModule } from '@libs/shared';
 
 @Module({
   imports: [
@@ -12,9 +12,9 @@ import { ArticlesModule } from './articles/articles.module';
       isGlobal: true,
     }),
     PrismaModule,
-    AuthModule,
     EntitiesModule,        
     UsersModule,
+    SecurityModule,
     ArticlesModule
   ],
 })

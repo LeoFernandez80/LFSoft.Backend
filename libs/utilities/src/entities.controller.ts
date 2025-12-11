@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { EntitiesService } from './entities.service';
-import { CreateEntityDto, UpdateEntityDto } from './dto/entity.dto';
+import { JwtAuthGuard } from '@libs/security';
 import { EntityFilterDto } from './dto/entity-filter.dto';
-import { PageFilterDto } from '../shared/page-filter.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateEntityDto, UpdateEntityDto } from './dto/entity.dto';
+import { PageFilterDto } from '@libs/shared';
 
 @Controller('entities')
 @UseGuards(JwtAuthGuard)
@@ -11,7 +11,7 @@ export class EntitiesController {
   constructor(private entitiesService: EntitiesService) {}
 
   @Get()
-  findAll(@Query() pageFilter: PageFilterDto, @Query() filters: EntityFilterDto) {    
+  findAll(@Query() pageFilter: PageFilterDto, @Query() filters: EntityFilterDto) {
     return this.entitiesService.findAll(filters, pageFilter);
   }
 
@@ -21,7 +21,7 @@ export class EntitiesController {
   }
 
   @Post()
-  create(@Body() createEntityDto: CreateEntityDto) {    
+  create(@Body() createEntityDto: CreateEntityDto) {
     return this.entitiesService.create(createEntityDto);
   }
 
