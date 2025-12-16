@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
-import { EntitiesService } from './entities.service';
 import { JwtAuthGuard } from '@libs/security';
+import { PageFilterDto } from '@libs/shared';
+import { EntitiesService } from './entities.service';
 import { EntityFilterDto } from './dto/entity-filter.dto';
 import { CreateEntityDto, UpdateEntityDto } from './dto/entity.dto';
-import { PageFilterDto } from '@libs/shared';
 
 @Controller('entities')
 @UseGuards(JwtAuthGuard)

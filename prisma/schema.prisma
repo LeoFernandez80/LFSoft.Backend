@@ -51,3 +51,100 @@ model Article {
 
   @@map("articles")
 }
+
+
+enum EnumDocumentStatus {
+  inCreation
+  completed
+  cancelled
+}
+
+model Document {
+  documentId            Int                 @id @default(autoincrement())
+  personName            String
+  personId              Int
+  personDocumentType    String
+  personDocumentNumber  String
+  documentDescription   String
+  documentCreationDate  DateTime            @default(now())
+  documentStatus        EnumDocumentStatus  @default(inCreation)
+  creationUserId        Int
+
+  items                 DocumentItem[]
+
+  @@map("documents")
+}
+
+model DocumentItem {
+  documentId      Int
+  itemId          Int
+  itemDescription String
+  details         DocumentItemDetail[]
+
+  document        Document @relation(fields: [documentId], references: [documentId], onDelete: Cascade)
+
+  @@id([documentId, itemId])
+  @@map("document_items")
+}
+
+model DocumentItemDetail {
+  documentId        Int
+  itemId            Int
+  detailId          Int
+  detailDescription String
+
+  item              DocumentItem @relation(fields: [documentId, itemId], references: [documentId, itemId], onDelete: Cascade)
+
+  @@id([documentId, itemId, detailId])
+  @@map("document_item_details")
+}
+
+model Invoice {
+  invoiceId            Int                 @id @default(autoincrement())
+  personName           String
+  personId             Int
+  personDocumentType   String
+  personDocumentNumber String
+  invoiceDescription   String
+  invoiceCreationDate  DateTime            @default(now())
+  invoiceSentDate      DateTime
+  creationUserId       Int
+  invoiceTotalPrice    Float               @default(0)
+  isActive             Boolean             @default(true)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  items                InvoiceItem[]
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  invoiceId        Int
+  itemId           Int
+  itemDescription  String
+  itemQuantity     Float               @default(0)
+  itemTotalPrice   Float               @default(0)
+  details          InvoiceItemDetail[]
+
+  invoice          Invoice @relation(fields: [invoiceId], references: [invoiceId], onDelete: Cascade)
+
+  @@id([invoiceId, itemId])
+  @@map("invoice_items")
+}
+
+model InvoiceItemDetail {
+  invoiceId          Int
+  itemId             Int
+  detailId           Int
+  detailCode         String?
+  detailDescription  String
+  detailQuantity     Float               @default(0)
+  detailUnitPrice    Float               @default(0)
+  detailTotalPrice   Float               @default(0)
+
+  item               InvoiceItem @relation(fields: [invoiceId, itemId], references: [invoiceId, itemId], onDelete: Cascade)
+
+  @@id([invoiceId, itemId, detailId])
+  @@map("invoice_item_details")
+}
