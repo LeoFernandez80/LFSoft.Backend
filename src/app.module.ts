@@ -6,7 +6,7 @@ import { EntitiesModule, UtilitiesModule } from '@libs/utilities';
 import { ArticlesModule } from '@libs/articles';
 
 import { PrismaModule } from '@libs/shared';
-import { InvoiceModule } from '@libs/sales';
+import { InvoiceModule, QuoteModule, CustomersModule } from '@libs/sales';
 
 @Module({
   imports: [
@@ -19,6 +19,8 @@ import { InvoiceModule } from '@libs/sales';
     SecurityModule,
     ArticlesModule,
     InvoiceModule,
+    QuoteModule,
+    CustomersModule,
     UtilitiesModule
   ],
 })

@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "customers" ALTER COLUMN "nombre" DROP NOT NULL,
+ALTER COLUMN "apellido" DROP NOT NULL,
+ALTER COLUMN "razonSocial" DROP NOT NULL,
+ALTER COLUMN "documento" DROP NOT NULL,
+ALTER COLUMN "tipoDocumento" DROP NOT NULL;

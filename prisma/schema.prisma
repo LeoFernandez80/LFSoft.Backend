@@ -148,3 +148,93 @@ model InvoiceItemDetail {
   @@id([invoiceId, itemId, detailId])
   @@map("invoice_item_details")
 }
+
+enum EnumQuoteStates {
+  quoteInMaking
+  quoteSent
+  quoteApproved
+  quoteRejected
+  quoteCancelled
+}
+
+model Quote {
+  quoteId            Int                 @id @default(autoincrement())
+  customerId         Int
+  quoteDescription   String
+  quoteCreationDate  DateTime            @default(now())
+  quoteStateId       EnumQuoteStates     @default(quoteInMaking)
+  quoteTotalPrice    Float               @default(0)
+  isActive           Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  items              QuoteItem[]
+
+  @@map("quotes")
+}
+
+model QuoteItem {
+  quoteId          Int
+  itemId           Int
+  itemQuantity     Float               @default(0)
+  itemDescription  String
+  itemUnitPrice    Float               @default(0)
+  itemTotalPrice   Float               @default(0)
+
+  quote            Quote @relation(fields: [quoteId], references: [quoteId], onDelete: Cascade)
+  articles         QuoteItemArticle[]
+
+  @@id([quoteId, itemId])
+  @@map("quote_items")
+}
+
+model QuoteItemArticle {
+  quoteId                  Int
+  itemId                   Int
+  itemArticleId            Int
+  itemArticleQuantity      Float               @default(0)
+  itemArticleAssembly      String
+  itemArticleDescription   String
+  itemArticleUnitPrice     Float               @default(0)
+  itemArticleTotalPrice    Float               @default(0)
+
+  item                     QuoteItem @relation(fields: [quoteId, itemId], references: [quoteId, itemId], onDelete: Cascade)
+
+  @@id([quoteId, itemId, itemArticleId])
+  @@map("quote_item_articles")
+}
+
+model Client {
+  id              Int      @id @default(autoincrement())
+  documentType    String
+  documentNumber  String   @unique
+  name            String
+  email           String?
+  phone           String?
+  address         String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("clients")
+}
+
+model Customer {
+  id              Int      @id @default(autoincrement())
+  nombre          String?
+  apellido        String?
+  razonSocial     String?
+  documento       String?
+  tipoDocumento   String?
+  telefono        String?
+  email           String?
+  direccion       String?
+  ciudad          String?
+  provincia       String?
+  codigoPostal    String?
+  activo          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("customers")
+}
